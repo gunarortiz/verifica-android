@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".ui.ImportCetificateActivity">
+
+    <TextView
+        style="@style/Title"
+        android:text="Importa tus  datos" />
+
+    <TextView
+        style="@style/Basic"
+        android:text="Ve a tu cuenta y busca la opción “Cambiar de smartphone” en ajustes, y copia a este smartphone el archivo que se exporte."
+        android:textColor="@color/textAccent" />
+
+
+    <Button
+        style="@style/Button"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/input_fill"
+        android:text="Subir certificado"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        style="@style/BasicBold"
+        android:text="Contraseña"
+        android:textSize="16dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etPass"
+            style="@style/Input"
+            android:inputType="textPassword"
+            app:passwordToggleEnabled="true" />
+
+        <ImageView
+            android:id="@+id/show_pass_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="10dp"
+            android:alpha=".5"
+            android:padding="5dp"
+            android:src="@drawable/ic_eye" />
+    </RelativeLayout>
+
+    <Button
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/orange"
+        android:text="Finalizar" />
+
+
+</LinearLayout>

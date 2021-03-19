@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white"
+    tools:context=".ui.SignupActivity"
+
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    >
+    <ScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        >
+
+        <LinearLayout
+            style="@style/LinearMain">
+
+            <LinearLayout
+                android:gravity="start|center_vertical"
+                android:layout_marginBottom="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/titlePage"
+                    style="@style/Title"
+                    android:text="Ingresa tus datos"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="0dp"
+                    />
+
+            </LinearLayout>
+
+
+            <TextView
+                style="@style/Basic"
+                android:text="Esta información se encriptara y solo se guardara en tu smartphone."
+                android:textColor="@color/textAccent" />
+
+            <Button
+                android:id="@+id/imagen_btn"
+                style="@style/Button"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/input_fill"
+                android:text="Subir imagen de perfil"
+
+                android:textColor="@android:color/black" />
+
+
+
+
+
+
+
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/image_container"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:cardCornerRadius="100dp"
+                        >
+
+                        <ImageView
+                            android:id="@+id/profile_select_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/ic_launcher" />
+
+                    </androidx.cardview.widget.CardView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <TextView
+                android:layout_marginTop="20dp"
+                style="@style/BasicBold"
+                android:text="Nombres"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etNombres"
+                style="@style/Input"/>
+
+            <TextView
+                style="@style/BasicBold"
+                android:text="Apellidos"
+                android:textSize="16dp"
+                />
+
+            <EditText
+                android:id="@+id/etApellidos"
+                style="@style/Input"/>
+
+            <TextView
+                style="@style/BasicBold"
+                android:text="Email"
+                android:inputType="phone"
+                android:textSize="16dp"
+                />
+
+            <EditText
+                android:id="@+id/etEmail"
+                android:inputType="textEmailAddress"
+                style="@style/Input"/>
+
+
+
+            <TextView
+                style="@style/BasicBold"
+                android:text="Contraseña"
+                android:textSize="16dp"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    app:passwordToggleEnabled="true"
+                    android:id="@+id/etPass"
+                    android:inputType="textPassword"
+                    style="@style/Input"/>
+                <ImageView
+                    android:id="@+id/show_pass_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:padding="5dp"
+                    android:layout_marginTop="15dp"
+                    android:alpha=".5"
+                    android:src="@drawable/ic_eye"/>
+            </RelativeLayout>
+
+            <TextView
+                style="@style/BasicBold"
+                android:text="Celular"
+
+                android:textSize="16dp"
+                />
+
+            <EditText
+                android:hint="+591 69789955"
+                android:id="@+id/etCelular"
+                android:inputType="phone"
+                style="@style/Input"/>
+
+            <TextView
+                style="@style/BasicBold"
+                android:text="Fecha de nacimiento "
+
+                android:textSize="16dp"
+                />
+
+            <DatePicker
+                android:id="@+id/etFecha"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:datePickerMode="spinner"
+                android:maxDate="12/31/2021"
+                android:calendarViewShown="false"/>
+
+            <Button
+                android:id="@+id/register_btn"
+                style="@style/Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:backgroundTint="@color/orange"
+                android:text="Registrar" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#c9000000"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:visibility="invisible">
+        <ProgressBar
+            android:indeterminateTint="@color/colorPrimary"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</RelativeLayout>

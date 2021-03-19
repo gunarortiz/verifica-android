@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:gravity="center_vertical"
+    android:padding="20dp"
+    tools:context=".ui.SuccessfulSignupActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <TextView
+            style="@style/Title"
+            android:singleLine="false"
+            android:text="Tu información personal se encriptó con éxito" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:lottie_rawRes="@raw/animation_security"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="false"/>
+
+<!--        <ImageView-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="100dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginBottom="30dp"-->
+<!--            android:src="@drawable/ic_shield"/>-->
+
+        <Button
+            style="@style/Button"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/orange"
+            android:text="Finalizar" />
+    </LinearLayout>
+
+</LinearLayout>

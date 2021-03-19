@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "987832803951",
+    "project_id": "verifica-dev",
+    "storage_bucket": "verifica-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:987832803951:android:195e69337b77bf722c239a",
+        "android_client_info": {
+          "package_name": "com.verifica"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "987832803951-coe39eoo46jlnm89rlpkalrvudfobqf8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgAjUjk008wvlGVyY1NrwIKotoRML4E8E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "987832803951-coe39eoo46jlnm89rlpkalrvudfobqf8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

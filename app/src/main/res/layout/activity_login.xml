@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@android:color/white"
+    tools:context=".ui.LoginActivity">
+
+    <TextView
+        style="@style/Title"
+        android:text="Ingresa a tu cuenta" />
+
+    <Button
+        android:id="@+id/go_to_import_btn"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/orange"
+        android:text="Tengo mi anterior smartphone" />
+
+    <Button
+        android:id="@+id/go_to_recover"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/orange"
+        android:text="No tengo acceso" />
+
+    <TextView
+        style="@style/Basic"
+        android:text="En caso de no tener acceso a tu anterior smartphone y/o cuenta se te pedirá que vuelvas a ingresar tus datos."
+        android:textColor="@color/textAccent" />
+</LinearLayout>
