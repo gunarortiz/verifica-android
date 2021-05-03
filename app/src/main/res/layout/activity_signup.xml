@@ -115,6 +115,19 @@
 
             <TextView
                 style="@style/BasicBold"
+                android:text="Celular"
+
+                android:textSize="16dp"
+                />
+
+            <EditText
+                android:hint="+591 69789955"
+                android:id="@+id/etCelular"
+                android:inputType="phone"
+                style="@style/Input"/>
+
+            <TextView
+                style="@style/BasicBold"
                 android:text="Email"
                 android:inputType="phone"
                 android:textSize="16dp"
@@ -153,18 +166,7 @@
                     android:src="@drawable/ic_eye"/>
             </RelativeLayout>
 
-            <TextView
-                style="@style/BasicBold"
-                android:text="Celular"
 
-                android:textSize="16dp"
-                />
-
-            <EditText
-                android:hint="+591 69789955"
-                android:id="@+id/etCelular"
-                android:inputType="phone"
-                style="@style/Input"/>
 
             <TextView
                 style="@style/BasicBold"

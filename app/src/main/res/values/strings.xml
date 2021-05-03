@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Verifica</string>
+    <string name="preference_file_key">com.verifica.sharedpreferences</string>
 </resources>

@@ -26,6 +26,8 @@
         android:textColor="@color/textAccent"/>
 
     <LinearLayout
+        android:id="@+id/ll_si_secure"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp"
@@ -45,6 +47,30 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:src="@drawable/ic_shield"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_no_secure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:orientation="horizontal"
+        android:background="@drawable/corners"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="center_vertical"
+        android:backgroundTint="@color/redAccent">
+        <TextView
+            style="@style/BasicBold"
+            android:layout_weight="1"
+            android:text="La seguridad por Hardware no esta disponible en tu dispositivo "/>
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_less_guard"/>
     </LinearLayout>
 
     <LinearLayout

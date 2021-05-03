@@ -20,6 +20,7 @@
     <color name="red">#E03232</color>
     <color name="green">#4DB846</color>
     <color name="greenAccent">#D3F9E9</color>
+    <color name="redAccent">#FFD0D0</color>
     <color name="yellow">#FFC245</color>
     <color name="orange">#FB8414</color>
 </resources>
