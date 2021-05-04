@@ -31,6 +31,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
+import com.gunar.uta.data.Static.Companion.CODE
+import com.gunar.uta.data.Static.Companion.DATE
+import com.gunar.uta.data.Static.Companion.KEYSTORE_TYPE
+import com.gunar.uta.data.Static.Companion.KEY_ALIAS
+import com.gunar.uta.data.Static.Companion.LAST_NAMES
+import com.gunar.uta.data.Static.Companion.MAIL
+import com.gunar.uta.data.Static.Companion.NAMES
+import com.gunar.uta.data.Static.Companion.PHONE
+import com.gunar.uta.data.Static.Companion.PHOTO
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -48,14 +57,12 @@ import java.math.BigInteger
 import java.nio.charset.Charset
 import java.security.*
 import java.security.cert.CertificateException
+import java.security.spec.InvalidKeySpecException
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.crypto.BadPaddingException
-import javax.crypto.Cipher
-import javax.crypto.IllegalBlockSizeException
-import javax.crypto.NoSuchPaddingException
+import javax.crypto.*
 import javax.crypto.spec.GCMParameterSpec
-import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
 import javax.security.auth.x500.X500Principal
 
 
@@ -105,15 +112,18 @@ class SignupActivity : AppCompatActivity() {
 
 //        createKey(baseContext)
 
-        if(isHardwareBackedKeyStore()){
-            Toast.makeText(this, "sii", Toast.LENGTH_LONG).show()
 
-        }
-        else{
-            Toast.makeText(this, "noo", Toast.LENGTH_LONG).show()
-        }
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+//                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
 
-        tryEncrypt()
+            // Get new FCM registration token
+            val token = task.result
+            deviceToken = token + ""
+        })
+
 
     }
 
@@ -181,39 +191,27 @@ class SignupActivity : AppCompatActivity() {
             etCelular.text.toString(),
             encodedString,
             code,
-            Auth(etEmail.text.toString(), etEmail.text.toString())
+            Auth(etEmail.text.toString(), etPass.text.toString())
         )
 
-        Toast.makeText(this, encodedString, Toast.LENGTH_LONG).show()
+        tryEncrypt(NAMES, usuario!!.nombres!!)
+        tryEncrypt(LAST_NAMES, usuario!!.apellidos!!)
+        tryEncrypt(PHONE, usuario!!.telCelular!!)
+        tryEncrypt(MAIL, usuario!!.auth!!.email!!)
+        tryEncrypt(DATE, usuario!!.fechaNac!!.toString())
+        tryEncrypt(PHOTO, usuario!!.foto!!)
 
 
+
+        saveUserFirestore()
 
     }
 
-    fun saveUserFirestore(){
-
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-//                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            val token = task.result
-            deviceToken = token + ""
-//            etNombres.setText(token)
-            Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()
-        })
+    fun saveUserFirestore(): Unit{
 
         db.collection("usuario").document(code).get()
             .addOnCompleteListener {
-                val refreshedToken: String = FirebaseInstanceId.getInstance().token!!
 
-                Toast.makeText(
-                    applicationContext,
-                    refreshedToken,
-                    Toast.LENGTH_LONG
-                ).show()
 
                 if (it.isSuccessful) {
                     if (it.result!!.data != null) {
@@ -228,7 +226,7 @@ class SignupActivity : AppCompatActivity() {
                             usuario!!.auth!!.contrasena,
                             deviceToken,
                             getDeviceId(),
-                            true
+                            isHardwareBackedKeyStore()
                         )
                         db.collection("usuario").document(code)
                             .set(user, SetOptions.merge())
@@ -238,6 +236,16 @@ class SignupActivity : AppCompatActivity() {
                                     "Se creo",
                                     Toast.LENGTH_LONG
                                 ).show()
+
+                                val sharedPref = applicationContext.getSharedPreferences(
+                                    getString(R.string.preference_file_key), Context.MODE_PRIVATE
+                                )
+
+                                with(sharedPref.edit()) {
+                                    putString(CODE, code)
+                                    commit()
+                                }
+
                                 val intent = Intent(this, SuccessfulSignupActivity::class.java)
 
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -258,6 +266,8 @@ class SignupActivity : AppCompatActivity() {
         )
     }
 
+
+
     private fun validateEmail() {
         if (etEmail.text.matches(emailPattern.toRegex())) {
             Toast.makeText(
@@ -269,185 +279,172 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
-//    private fun createKey() {
-//        // Generate a key to decrypt payment credentials, tokens, etc.
-//        // This will most likely be a registration step for the user when they are setting up your app.
-//        try {
-//            val keyStore: KeyStore = KeyStore.getInstance("AndroidKeyStore")
-//            keyStore.load(null)
-//            val keyGenerator: KeyGenerator = KeyGenerator.getInstance(
-//                KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore"
-//            )
-//
-//            // Set the alias of the entry in Android KeyStore where the key will appear
-//            // and the constrains (purposes) in the constructor of the Builder
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                keyGenerator.init(
-//                    KeyGenParameterSpec.Builder(
-//                        KEY_NAME,
-//                        KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
-//                    )
-//                        .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-//                        .setUserAuthenticationRequired(true) // Require that the user has unlocked in the last 30 seconds
-//                        .setUserAuthenticationValidityDurationSeconds(
-//                            AUTHENTICATION_DURATION_SECONDS
-//                        )
-//                        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-//                        .build()
-//                )
-//
-//
-//            }
-//            keyGenerator.generateKey()
-//        } catch (e: NoSuchAlgorithmException) {
-//            throw RuntimeException("Failed to create a symmetric key", e)
-//        } catch (e: NoSuchProviderException) {
-//            throw RuntimeException("Failed to create a symmetric key", e)
-//        } catch (e: InvalidAlgorithmParameterException) {
-//            throw RuntimeException("Failed to create a symmetric key", e)
-//        } catch (e: KeyStoreException) {
-//            throw RuntimeException("Failed to create a symmetric key", e)
-//        } catch (e: CertificateException) {
-//            throw RuntimeException("Failed to create a symmetric key", e)
-//        } catch (e: IOException) {
-//            throw RuntimeException("Failed to create a symmetric key", e)
-//        }
-//    }
-
-    private val KEY_ALIAS = "Verifica_Key_Alias1"
-    private val KEYSTORE_TYPE = "AndroidKeyStore"
-
-    private fun isKeyPresent(): Boolean{
-        val keyStore = KeyStore.getInstance("AndroidKeyStore")
-        keyStore.load(null)
-        val privateKey = keyStore.getKey(KEY_ALIAS, null)
-        Toast.makeText(this, privateKey.toString(), Toast.LENGTH_SHORT).show()
-        if (privateKey != null){
-            return true
-        }
-        return false
-    }
-
-
-    fun createKey(context: Context): Boolean {
-        try {
-
-            return if (!isKeyPresent()) {
-                Log.d("TAG", "Creating new KEY. KEY ALIAS NOT FOUND")
-                val start = Calendar.getInstance()
-                val end = Calendar.getInstance()
-                end.add(Calendar.YEAR, 10)
-                val spec = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                    KeyPairGeneratorSpec.Builder(context)
-                        .setAlias(KEY_ALIAS)
-                        .setSubject(X500Principal("CN=" + KEY_ALIAS.toString() + ", O=Android Authority"))
-                        .setSerialNumber(BigInteger.ONE)
-                        .setStartDate(start.time)
-                        .setEndDate(end.time)
-                        .build()
-                } else {
-                    TODO("VERSION.SDK_INT < JELLY_BEAN_MR2")
-                }
-                val generator: KeyPairGenerator = KeyPairGenerator.getInstance("RSA", KEYSTORE_TYPE)
-                generator.initialize(spec)
-                generator.generateKeyPair()
-                true
-            } else {
-                Log.d("TAG", "KEY ALIAS Exists")
-                false
-            }
-        } catch (e: java.lang.Exception) {
-//            Log.e(TAG, Log.getStackTraceString(e))
-        }
-        return false
-    }
 
     private fun isHardwareBackedKeyStore(): Boolean {
-        if (Build.VERSION.SDK_INT < 23) {
-            return false
-        } else {
+        val keyStore = KeyStore.getInstance(KEYSTORE_TYPE)
+        keyStore.load(null)
+        val secretKey = keyStore.getKey(KEY_ALIAS, null) as SecretKey
+
+        //check key info\
+            var factory: SecretKeyFactory =
+                SecretKeyFactory.getInstance(secretKey.getAlgorithm(), KEYSTORE_TYPE);
+            var keyInfo: KeyInfo
+
             try {
-                val keyStore = KeyStore.getInstance("AndroidKeyStore")
-                keyStore.load(null)
-                val privateKey = keyStore.getKey(KEY_ALIAS, null)
-                val keyFactory = KeyFactory.getInstance(privateKey.algorithm, "AndroidKeyStore")
-                val keyInfo = keyFactory.getKeySpec(
-                    privateKey,
-                    KeyInfo::class.java
-                )
+                keyInfo = factory.getKeySpec(secretKey, KeyInfo::class.java) as KeyInfo
+
                 return keyInfo.isInsideSecureHardware
-            } catch (e: Exception) {
+            } catch (e: InvalidKeySpecException) {
+//                String checkKeyInfo = "";
             }
-        }
+
         return false
     }
 
 
 
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun tryEncrypt(): Boolean {
+//    private fun isKeyPresent(): Boolean{
+//        val keyStore = KeyStore.getInstance("AndroidKeyStore")
+//        keyStore.load(null)
+//        val privateKey = keyStore.getKey(KEY_ALIAS, null)
+//        Toast.makeText(this, privateKey.toString(), Toast.LENGTH_SHORT).show()
+//        if (privateKey != null){
+//            return true
+//        }
+//        return false
+//    }
+//
+//
+//    fun createKey(context: Context): Boolean {
+//        try {
+//
+//            return if (!isKeyPresent()) {
+//                Log.d("TAG", "Creating new KEY. KEY ALIAS NOT FOUND")
+//                val start = Calendar.getInstance()
+//                val end = Calendar.getInstance()
+//                end.add(Calendar.YEAR, 10)
+//                val spec = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+//                    KeyPairGeneratorSpec.Builder(context)
+//                        .setAlias(KEY_ALIAS)
+//                        .setSubject(X500Principal("CN=" + KEY_ALIAS.toString() + ", O=Android Authority"))
+//                        .setSerialNumber(BigInteger.ONE)
+//                        .setStartDate(start.time)
+//                        .setEndDate(end.time)
+//                        .build()
+//                } else {
+//                    TODO("VERSION.SDK_INT < JELLY_BEAN_MR2")
+//                }
+//                val generator: KeyPairGenerator = KeyPairGenerator.getInstance("RSA", KEYSTORE_TYPE)
+//                generator.initialize(spec)
+//                generator.generateKeyPair()
+//                true
+//            } else {
+//                Log.d("TAG", "KEY ALIAS Exists")
+//                false
+//            }
+//        } catch (e: java.lang.Exception) {
+////            Log.e(TAG, Log.getStackTraceString(e))
+//        }
+//        return false
+//    }
+//
+//    private fun isHardwareBackedKeyStore(): Boolean {
+//        if (Build.VERSION.SDK_INT < 23) {
+//            return false
+//        } else {
+//            try {
+//                val keyStore = KeyStore.getInstance("AndroidKeyStore")
+//                keyStore.load(null)
+//                val privateKey = keyStore.getKey(KEY_ALIAS, null)
+//                val keyFactory = KeyFactory.getInstance(privateKey.algorithm, "AndroidKeyStore")
+//                val keyInfo = keyFactory.getKeySpec(
+//                    privateKey,
+//                    KeyInfo::class.java
+//                )
+//                return keyInfo.isInsideSecureHardware
+//            } catch (e: Exception) {
+//            }
+//        }
+//        return false
+//    }
+
+    private var ivG: ByteArray = ByteArray(0)
+
+
+
+    private fun tryEncrypt(name:String, value: String): Boolean {
         try {
-            val keyStore = KeyStore.getInstance("AndroidKeyStore")
+            val keyStore = KeyStore.getInstance(KEYSTORE_TYPE)
             keyStore.load(null)
             val secretKey = keyStore.getKey(KEY_ALIAS, null)
+
             Log.w("TAG", "decrypt" + secretKey.toString())
-            val cipher: Cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
 
 
-            // Try encrypting something, it will only work if the user authenticated within
-            // the last AUTHENTICATION_DURATION_SECONDS seconds.
+            val cipher = Cipher.getInstance("AES/GCM/NoPadding")
             cipher.init(Cipher.ENCRYPT_MODE, secretKey)
-
-            val nombre = "gunar"
-
-            val iv = cipher.getIV();
+            val ciphertext = cipher.doFinal(value.toByteArray())
+//            ivG = cipher.iv
 
 
-            val ciphertext: ByteArray = cipher.doFinal(nombre.toByteArray(Charset.defaultCharset()))
-            Log.w("TAG", "crypt" + ciphertext.toString())
+            val sharedPref = applicationContext.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE
+            )
 
+            with(sharedPref.edit()) {
+                putString(name, Arrays.toString(ciphertext))
+                putString(name+"IV", Arrays.toString(cipher.iv))
+                commit()
+            }
 
-            tryDecrypt(ciphertext)
+//            tryDecrypt(ciphertext)
             return true
         }
-        catch (e: BadPaddingException) {
+        catch (e: Exception) {
             Log.w("TAG", "error" + e.message)
-            throw RuntimeException(e)
-        } catch (e: IllegalBlockSizeException) {
-            throw RuntimeException(e)
-        } catch (e: KeyStoreException) {
-            throw RuntimeException(e)
-        } catch (e: CertificateException) {
-            throw RuntimeException(e)
-        } catch (e: UnrecoverableKeyException) {
-            throw RuntimeException(e)
-        } catch (e: IOException) {
-            throw RuntimeException(e)
-        } catch (e: NoSuchPaddingException) {
-            throw RuntimeException(e)
-        } catch (e: NoSuchAlgorithmException) {
-            throw RuntimeException(e)
-        } catch (e: InvalidKeyException) {
-            throw RuntimeException(e)
+//            throw RuntimeException(e)
         }
+//        catch (e: IllegalBlockSizeException) {
+//            throw RuntimeException(e)
+//        } catch (e: KeyStoreException) {
+//            throw RuntimeException(e)
+//        } catch (e: CertificateException) {
+//            throw RuntimeException(e)
+//        } catch (e: UnrecoverableKeyException) {
+//            throw RuntimeException(e)
+//        } catch (e: IOException) {
+//            throw RuntimeException(e)
+//        } catch (e: NoSuchPaddingException) {
+//            throw RuntimeException(e)
+//        } catch (e: NoSuchAlgorithmException) {
+//            throw RuntimeException(e)
+//        } catch (e: InvalidKeyException) {
+//            throw RuntimeException(e)
+//        }
+        return false;
     }
+
 
     private fun tryDecrypt(ciphertext: ByteArray){
         try {
-            val keyStore = KeyStore.getInstance("AndroidKeyStore")
+            val keyStore = KeyStore.getInstance(KEYSTORE_TYPE)
             keyStore.load(null)
             val secretKey = keyStore.getKey(KEY_ALIAS, null)
 
-            Log.w("TAG", "decrypt" + secretKey.toString())
+//            Log.w("TAG", "decrypt" + secretKey.toString())
 
-            val cipher: Cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
+            val cipher: Cipher = Cipher.getInstance("AES/GCM/NoPadding")
 
-            cipher.init(Cipher.DECRYPT_MODE, secretKey)
+//            val gcmspec: GCMParameterSpec =
+//                cipher.parameters.getParameterSpec(GCMParameterSpec::class.java)
+//            Log.w("TAG", "ciphertext: " + ciphertext.size + ", IV: " + iv.size + ", tLen: " + gcmspec.tLen)
 
 
-            val decryptedBytes = cipher.doFinal(ciphertext, 256)
-            Log.w("TAG", "decrypt" + decryptedBytes)
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, GCMParameterSpec(128, ivG))
+            val plaintext = cipher.doFinal(ciphertext)
+
+            Log.w("TAG", "plaintext : " + String(plaintext))
 
         }
         catch (e: Exception) {

@@ -129,7 +129,6 @@
             <TextView
                 style="@style/BasicBold"
                 android:text="Email"
-                android:inputType="phone"
                 android:textSize="16dp"
                 />
 

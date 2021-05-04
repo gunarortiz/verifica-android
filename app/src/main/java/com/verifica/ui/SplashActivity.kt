@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
 import com.gunar.uta.data.PairData
+import com.gunar.uta.data.Static.Companion.CODE
 import com.verifica.MainActivity
 import com.verifica.R
 import java.util.concurrent.Executor
@@ -59,7 +60,6 @@ class SplashActivity : AppCompatActivity() {
                 "Error de Credenciales",
                 "Necesitas definir algun tipo de protección para usar la app"
             )
-
             return
         }
 
@@ -78,7 +78,6 @@ class SplashActivity : AppCompatActivity() {
                         var a = 4
                     } else {
 
-//                        Log.d(TAG, "An unrecoverable error occurred")
                     }
                     if (errorCode == BiometricPrompt.ERROR_NO_BIOMETRICS) {
                         var a = 4
@@ -116,13 +115,9 @@ class SplashActivity : AppCompatActivity() {
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
 
-        val firstTime = sharedPref.getBoolean("firstTime", true)
+        val code = sharedPref.getString(CODE, "")
 
-        if (firstTime) {
-            with(sharedPref.edit()) {
-                putBoolean("firstTime", false)
-                commit()
-            }
+        if (code.isNullOrEmpty()) {
             mDelayHandler = Handler()
             mDelayHandler!!.postDelayed(mRunnable, 1000)
         } else {
@@ -132,37 +127,6 @@ class SplashActivity : AppCompatActivity() {
                 myBiometricPrompt.authenticate(promptInfo)
             }
         }
-//        val sindicatoId = sharedPref.getString("sindicatoId", "")
-
-//        if (choferId!!.isNotEmpty()) {
-//            mDelayHandler!!.removeCallbacks(mRunnable)
-//
-//            db.collection("chofer").document(choferId).get().addOnCompleteListener {
-//
-//                if (it.isSuccessful) {
-//                    if (it.result!!.data != null) {
-//
-////                        val chofer1 = it.result!!.toObject(Chofer::class.java)
-////                        chofer = PairData(it.result!!.id, chofer1!!)
-//
-//
-//
-//                    } else {
-////                        goToLogin()
-//                    }
-//                }
-//
-//            }
-//
-//        } else {
-////            val currenteUser = FirebaseAuth.getInstance().currentUser
-////            if (currenteUser != null) {
-////                val intent = Intent(this, ListSindicatosActivity::class.java)
-////                startActivity(intent)
-////                finish()
-////            }
-//        }
-
     }
 
     fun alert(title: String, message: String) {
@@ -212,7 +176,7 @@ class SplashActivity : AppCompatActivity() {
 
     fun goToMainActivity() {
 
-        val intent = Intent(this, WelcomActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }

@@ -35,12 +35,13 @@
 <!--            android:src="@drawable/ic_shield"/>-->
 
         <Button
+            android:id="@+id/next_btn"
             style="@style/Button"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:backgroundTint="@color/orange"
-            android:text="Finalizar" />
+            android:text="Continuar" />
     </LinearLayout>
 
 </LinearLayout>

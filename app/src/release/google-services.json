@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "987832803951",
-    "project_id": "verifica-dev",
-    "storage_bucket": "verifica-dev.appspot.com"
+    "project_number": "620720306182",
+    "project_id": "verifica-prod",
+    "storage_bucket": "verifica-prod.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:987832803951:android:195e69337b77bf722c239a",
+        "mobilesdk_app_id": "1:620720306182:android:4de65e75f78d5476cd2b87",
         "android_client_info": {
           "package_name": "com.verifica"
         }
       },
       "oauth_client": [
         {
-          "client_id": "987832803951-coe39eoo46jlnm89rlpkalrvudfobqf8.apps.googleusercontent.com",
+          "client_id": "620720306182-0jf3ofb1qp7eg01mf9ckpph55bir2a2o.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDgAjUjk008wvlGVyY1NrwIKotoRML4E8E"
+          "current_key": "AIzaSyA2fe2J4Lr3wZcJEBpXXQMKvRg4jxiAuI4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "987832803951-coe39eoo46jlnm89rlpkalrvudfobqf8.apps.googleusercontent.com",
+              "client_id": "620720306182-0jf3ofb1qp7eg01mf9ckpph55bir2a2o.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

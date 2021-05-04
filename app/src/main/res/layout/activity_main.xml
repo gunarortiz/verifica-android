@@ -1,98 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/LinearMain"
-    tools:context=".MainActivity">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    >
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/corners"
-        android:backgroundTint="@color/yellow"
-        android:orientation="vertical"
-        android:padding="15dp">
-
-        <ImageView
-            android:id="@+id/options"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="right"
-            android:background="@drawable/ic_dots" />
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:layout_gravity="center"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="100dp"
-            app:contentPadding="5dp">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                app:cardBackgroundColor="@color/yellow"
-                android:layout_height="match_parent"
-                app:contentPadding="3dp"
-                app:cardCornerRadius="100dp">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cardCornerRadius="100dp">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@mipmap/ic_launcher" />
-
-                </androidx.cardview.widget.CardView>
-
-            </androidx.cardview.widget.CardView>
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            style="@style/BasicBold"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:text="Hola Gunar!"
-            android:textSize="23sp" />
-
-        <TextView
-            style="@style/Basic"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:text="Tu código es:"
-            android:textSize="18sp" />
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-10dp"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
+            style="@style/LinearMain"
+            android:padding="0dp"
+            tools:context=".MainActivity">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/corners"
+                android:backgroundTint="@color/yellow"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <ImageView
+                    android:id="@+id/options"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right"
+                    android:background="@drawable/ic_dots" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_gravity="center"
+                    app:cardBackgroundColor="@android:color/white"
+                    app:cardCornerRadius="100dp"
+                    app:contentPadding="5dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:cardBackgroundColor="@color/yellow"
+                        app:cardCornerRadius="100dp"
+                        app:contentPadding="3dp">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:cardCornerRadius="100dp">
+
+                            <ImageView
+                                android:id="@+id/iv_photo"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:src="@mipmap/ic_launcher" />
+
+                        </androidx.cardview.widget.CardView>
+
+                    </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    style="@style/BasicBold"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:text="Hola Gunar!"
+                    android:textSize="23sp" />
+
+                <TextView
+                    style="@style/Basic"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="15dp"
+                    android:text="Tu código es:"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="-10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_code"
+                        style="@style/BasicBold"
+
+                        android:layout_gravity="center_horizontal"
+                        android:text="3HJ4P"
+                        android:textSize="40sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_about"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/ic_help" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <TextView
-                style="@style/BasicBold"
-
+                style="@style/Title"
                 android:layout_gravity="center_horizontal"
-                android:text="3HJ4P"
-                android:textSize="40sp" />
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/ic_help" />
+                android:layout_marginTop="10dp"
+                android:textSize="22sp"
+                android:text="Servicios" />
+
+            <TextView
+                android:id="@+id/empty_list"
+                style="@style/Basic"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="Esta lista esta vacia"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="65dp"
+                    tools:listitem="@layout/item_service" />
+            </RelativeLayout>
 
         </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:touchscreenBlocksFocus="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_transparent"
+        android:elevation="15dp"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="3dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/new_btn"
+            style="@style/Button"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/orange"
+            android:layout_marginRight="5dp"
+            android:textAllCaps="false"
+            android:text="Nuevos" />
+        <Button
+            android:id="@+id/old_btn"
+            style="@style/Button"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
+            android:textAllCaps="false"
+            android:text="Antiguos" />
     </LinearLayout>
 
-    <TextView
-        style="@style/Title"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal"
-        android:text="Servicios" />
-
-
-</LinearLayout>
+</RelativeLayout>
